@@ -23,7 +23,7 @@ void gotoxy(int x, int y) {
 
 
 void run() {
-
+    
     system("color 20");
     char ch;
     int cnt = 0;
@@ -69,10 +69,10 @@ void run() {
                 if (vowel[i] == ch) {
                     vowel[i] = '/';
                 }
-                for (int j = 0; j < 21; j++)
-                    if (consonant[j] == ch) {
-                        consonant[j] = '/';
-                    }
+            for(int j=0; j<21; j++)
+                if (consonant[j] == ch) {
+                    consonant[j] = '/';
+                }
             }
         }
         if (ptr != NULL) {
@@ -115,3 +115,12 @@ void run() {
         printf("기회를 모두 소진했습니다!");
     }
 }
+int main(void)
+{
+    system("mode con: cols=100 lines=30");
+
+
+
+    run();
+    return 0;
+};

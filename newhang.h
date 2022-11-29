@@ -22,7 +22,7 @@ void gotoxy(int x, int y) {
 }
 
 
-void run() {
+void run_hang_man() {
 
     system("color 20");
     char ch;
@@ -114,4 +114,3 @@ void run() {
         gotoxy(50, 10);
         printf("기회를 모두 소진했습니다!");
     }
-}

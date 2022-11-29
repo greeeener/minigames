@@ -26,8 +26,37 @@ void MapMove();              //맵을 왼쪽으로 한 칸씩 밈
 int Gameover();             //게임 오버 화면
 void gotoxy(int x, int y);    //화면을 안 깜빡거리게
 void CursorView(bool show);  //커서를 안 보이게 하기 
-//메인 함수***************************************************************************
+//***************************************************************************
+void run_s() {
+	int turn = 1;
+	int ch, t = 0;
 
+	srand((unsigned)time(NULL));
+	CursorView(0);
+	turn = StartScreen();
+	if (turn == 1)
+	{
+		gotoxy(0, 0);
+		mapbase();
+		mapping();
+	}
+
+	while (turn)
+	{
+		if (_kbhit())
+		{
+			ch = _getch();
+			if (ch == 'j') Jump();
+		}
+		if (t % 30 == 0) MapMove();
+		if (t % 50 == 0) Gravity();
+		if (t % 500 == 0) Obstacle();
+		gotoxy(0, 0);
+		mapping();
+		turn = Gameover();
+		t++;
+	}
+}
 //시작 화면*****************************************************************************
 int StartScreen()
 {

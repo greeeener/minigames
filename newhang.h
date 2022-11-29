@@ -10,13 +10,13 @@
 
 #define LIFE 9;
 
-int life = LIFE;
+int life = LIFE; // 기회
 int len;
 int correct = 0;
-char vowel[] = { 'a','e','i','o','u' };
-char consonant[] = { 'b','c','d','f','g','h','j','k','l','m','n','p','q','r','s','t','v','w','x','y','z' };
+char vowel[] = { 'a','e','i','o','u' }; //모음
+char consonant[] = { 'b','c','d','f','g','h','j','k','l','m','n','p','q','r','s','t','v','w','x','y','z' }; //자음
 
-void gotoxy(int x, int y) {
+void gotoxy(int x, int y) { // x y 좌표함수
     COORD pos = { x,y };
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
@@ -51,7 +51,7 @@ void run_hang_man() {
     gotoxy(40, 0);
     printf("== 단어 맞추기 게임 ==");
 
-    while (life > 0) {
+    while (life > 0) { 
         gotoxy(80, 3);
         printf("[ life : %d ]", life);
         gotoxy(40, 5);
@@ -63,7 +63,7 @@ void run_hang_man() {
         gotoxy(0, 22);
         printf("자음 [ %c %c %c %c %c %c %c %c %c %c %c %c %c %c %c %c %c %c %c %c %c]", consonant[0], consonant[1], consonant[2], consonant[3], consonant[4], consonant[5], consonant[6], consonant[7], consonant[8], consonant[9], consonant[10], consonant[11], consonant[12], consonant[13], consonant[14], consonant[15], consonant[16], consonant[17], consonant[18], consonant[19], consonant[20]);
         ch = _getch();   //  문자입력
-        char* ptr = strchr(word, ch);
+        char* ptr = strchr(word, ch); // 입력 값이 참이면 모음,자음 칸을 0로 , 거짓이면 /로 바꿔주는 식
         if (ptr == NULL) {
             for (int i = 0; i < 5; i++) {
                 if (vowel[i] == ch) {
@@ -86,6 +86,7 @@ void run_hang_man() {
                     }
             }
         }
+
         gotoxy(62, 10);
         printf("%c", ch);
         cnt++;                                    // 시도 회수 카운트
@@ -111,6 +112,8 @@ void run_hang_man() {
         }
     }
     if (life == 0) {
+        gotoxy(80, 3);
+        printf("[ life : %d ]", life);
         gotoxy(50, 10);
         printf("기회를 모두 소진했습니다!");
     }

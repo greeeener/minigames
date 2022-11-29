@@ -2,22 +2,20 @@
 
 int main() {
 
-	init();
-	startMainScreen();
-	Sleep(1500);
+	CursorView(); //커서 안보이게
+	init(); //콘솔 이름, 크기 설정
+	startMainScreen(); //메인 화면
+	Sleep(2000);
 	system("cls");
-	//emptyScreen();
-	//Sleep(100);
-	//system("cls");
-	//selectGamesScreen();
-	//Sleep(2000);
-	//system("cls");
-	pacman();
+	selectGamesScreen(); //게임 선택 화면
+	Sleep(2000);
 	return 0;
 
 }
 
-void startMainScreen() {
+void startMainScreen() { //게임 시작 화면
+	//120 40
+
 	/*
 	printf("#   #  ###  #   #  ###     ###     #    #   #  #####   #### \n");
 	printf("## ##   #   ##  #   #     #       # #   ## ##  #      #     \n");
@@ -26,7 +24,7 @@ void startMainScreen() {
 	printf("#   #  ###  #   #  ###     ###   #   #  #   #  #####  ####  \n");
 	*/
 
-	int title[40][59] = {
+	int title[5][59] = {
 		{1,0,0,0,1,0,0,1,1,1,0,0,1,0,0,0,1,0,0,1,1,1,0,0,0,0,0,1,1,1,0,0,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,1,1,1,1,1,0,0,0,1,1,1,1},
 		{1,1,0,1,1,0,0,0,1,0,0,0,1,1,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,0,0,0,1,1,0,1,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0},
 		{1,0,1,0,1,0,0,0,1,0,0,0,1,0,1,0,1,0,0,0,1,0,0,0,0,0,1,0,0,1,1,0,0,1,1,1,1,1,0,0,1,0,1,0,1,0,0,1,1,1,1,0,0,0,0,1,1,1,0},
@@ -46,13 +44,104 @@ void startMainScreen() {
 	}
 }
 
-void selectGamesScreen() {
+void selectGamesScreen() { //게임 선택 화면
 
-	printf("\n\n\n\n");
+	textcolor(15);
 
-	printf("        HANGMAN        PACMAN\n\n\n");
-	printf("          RUN          TETRIS");
+	int hangmanTitle[4][34] = {
+		{1,0,0,1,0,0,1,1,0,0,1,0,0,1,0,0,1,1,0,0,1,0,0,1,0,0,1,1,0,0,1,0,0,1},
+		{1,1,1,1,0,1,0,0,1,0,1,1,0,1,0,1,0,0,0,0,1,1,1,1,0,1,0,0,1,0,1,1,0,1},
+		{1,1,1,1,0,1,1,1,1,0,1,0,1,1,0,1,0,1,1,0,1,0,0,1,0,1,1,1,1,0,1,0,1,1},
+		{1,0,0,1,0,1,0,0,1,0,1,0,0,1,0,0,1,1,0,0,1,0,0,1,0,1,0,0,1,0,1,0,0,1}
+	};
 
-	printf("\n\n\n\n");
+	int pacmanTitle[4][29] = {
+		{1,1,1,0,0,0,1,1,0,0,0,1,1,1,0,1,0,0,1,0,0,1,1,0,0,1,0,0,1},
+		{1,0,0,1,0,1,0,0,1,0,1,0,0,0,0,1,1,1,1,0,1,0,0,1,0,1,1,0,1},
+		{1,1,1,0,0,1,1,1,1,0,1,0,0,0,0,1,0,0,1,0,1,1,1,1,0,1,0,1,1},
+		{1,0,0,0,0,1,0,0,1,0,0,1,1,1,0,1,0,0,1,0,1,0,0,1,0,1,0,0,1}
+	};
 
+	int scrollTitle[4][29] = {
+		{0,1,1,1,0,0,1,1,1,0,1,1,1,0,0,0,1,1,0,0,1,0,0,0,0,1,0,0,0},
+		{1,1,0,0,0,1,0,0,0,0,1,0,0,1,0,1,0,0,1,0,1,0,0,0,0,1,0,0,0},
+		{0,0,1,1,0,1,0,0,0,0,1,1,1,0,0,1,0,0,1,0,1,0,0,0,0,1,0,0,0},
+		{1,1,1,0,0,0,1,1,1,0,1,0,0,1,0,0,1,1,0,0,1,1,1,1,0,1,1,1,1}
+	};
+
+	int tetrisTitle[4][29] = {
+		{1,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,1,1,0,0,1,1,1,1,0,0,1,1,1},
+		{0,1,1,0,0,1,1,1,0,0,0,1,1,0,0,1,0,0,1,0,0,1,1,0,0,1,1,0,0},
+		{0,1,1,0,0,1,0,0,0,0,0,1,1,0,0,1,1,1,0,0,0,1,1,0,0,0,0,1,1},
+		{0,1,1,0,0,1,1,1,1,0,0,1,1,0,0,1,0,0,1,0,1,1,1,1,0,1,1,1,0}
+	};
+
+	printTitle34(hangmanTitle, 4, 34, 13, 6);
+	gotoxy(20, 11);
+	printf("PRESS 'q' TO START");
+
+	printTitle29(pacmanTitle, 4, 29, 73, 6);
+	gotoxy(78, 11);
+	printf("PRESS 'w' TO START");
+
+	printTitle29(scrollTitle, 4, 29, 15, 23);
+	gotoxy(20, 28);
+	printf("PRESS 'e' TO START");
+
+	printTitle29(tetrisTitle, 4, 29, 73, 23);
+	gotoxy(78, 28);
+	printf("PRESS 'r' TO START");
+
+	int ch = getch();
+
+	switch (ch) {
+	case 'q': //hangman
+		system("cls");
+		break;
+	case 'w': //pacman
+		system("cls");
+		pacman();
+		break;
+	case 'e': //scroll
+		system("cls");
+		break;
+	case 'r': //tetris
+		system("cls");
+		break;
+	default:
+		gotoxy(55, 17);
+		textcolor(12);
+		printf("WRONG PRESS");
+		Sleep(500);
+		system("cls");
+		selectGamesScreen();
+		break;
+	}
+
+}
+
+void printTitle29(int map[][29], int h, int w, int x, int y) {
+	for (int i = 0; i < h; i++) {
+		gotoxy(x, y + i);
+		for (int j = 0; j < w; j++) {
+			if (map[i][j] == 1)
+				printf("#");
+			else if (map[i][j] == 0)
+				printf(" ");
+		}
+		printf("\n");
+	}
+}
+
+void printTitle34(int map[][34], int h, int w, int x, int y) {
+	for (int i = 0; i < h; i++) {
+		gotoxy(x, y + i);
+		for (int j = 0; j < w; j++) {
+			if (map[i][j] == 1)
+				printf("#");
+			else if (map[i][j] == 0)
+				printf(" ");
+		}
+		printf("\n");
+	}
 }

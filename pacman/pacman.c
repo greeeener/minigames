@@ -6,10 +6,9 @@ Enemy e2; //enemy(51, 19);
 Enemy e3; //enemy(65, 20);
 Enemy e4; //enemy(81, 13);
 
-
 int pm_score = 0;
 
-void pacman() {
+void pacman() { //팩맨 실행
 
 	startPacman();
 	Sleep(1000);
@@ -43,25 +42,38 @@ void pacman() {
 	initenemy();
 	initplayer();
 
+	int xy;
+	Player* pp = &player;
+
 	while (1) {
+#if 1
+		if (player.pos.x == 91 && player.pos.y == 19
+			|| player.pos.x == e1.pos.x && player.pos.y == e1.pos.y
+			|| player.pos.x == e2.pos.x && player.pos.y == e2.pos.y
+			|| player.pos.x == e3.pos.x && player.pos.y == e3.pos.y
+			|| player.pos.x == e4.pos.x && player.pos.y == e4.pos.y) {
+			endpacman();
+			break;
+		}
+#endif
+
 		update(map);
 
-		/*
-		int xy = getch();
-
-		if (xy != NULL) {
-			moveplayer(map, player, xy);
-			xy = NULL;
+		if (kbhit()) {
+			int xy = getch();
+			moveplayer(map, pp, xy);
 		}
 		else
 			continue;
-			*/
+
+		Sleep(10);
 
 	}
 
 }
 
-void startPacman() {
+void startPacman() { //팩맨 시작화면
+	textcolor(15);
 	gotoxy(40, 17);
 	printf("####     #     ####  #   #    #    #   # \n");
 	gotoxy(40, 18);
@@ -74,7 +86,7 @@ void startPacman() {
 	printf("#      #   #   ####  #   #  #   #  #   # \n");
 }
 
-void drawmap(int(*map)[34]) {
+void drawmap(int(*map)[34]) { //맵 그리기 함수
 
 	gotoxy(30, 7);
 	textcolor(8);
@@ -97,12 +109,8 @@ void drawmap(int(*map)[34]) {
 				textcolor(6);
 				printf("＊");
 			}
-			else if (map[i][j] == 1) {
-				textcolor(7);
-				printf("■");
-			}
-			else if (map[i][j] == 2) {
-				textcolor(7);
+			else if (map[i][j] == 1 || map[i][j] == 2) {
+				textnbackcolor(7,7);
 				printf("■");
 			}
 			else if (map[i][j] == 3) {
@@ -142,64 +150,61 @@ void drawmap(int(*map)[34]) {
 	printf("EXIT");
 }
 
-void initplayer() {
+void initplayer() { //플레이어 초기 위치 설정
 	player.pos.x = 27;
 	player.pos.y = 19;
 	int X = 27, Y = 19;
 	textcolor(14);
 	gotoxy(X, Y);
 	printf("●");
+	pm_score = 0;
 }
 
-void moveplayer(int(*map)[34], Player p, int xy) {
+void moveplayer(int(*map)[34], Player *p, int xy) { //플레이어 이동
 
 	bool check = true;
 
 	textcolor(14);
-	gotoxy(p.pos.x, p.pos.y);
+	gotoxy((*p).pos.x, (*p).pos.y);
 	printf("  ");
 
 	switch (xy) {
 	case UP:
-		p.pos.y--;
-		check = block(map, p.pos.x, p.pos.y);
+		(*p).pos.y--;
+		check = block(map, (*p).pos.x, (*p).pos.y);
 		if (check == true)
-			p.pos.y += 1;
+			(*p).pos.y += 1;
 		break;
 
 	case DOWN:
-		p.pos.y += 1;
-		check = block(map, p.pos.x, p.pos.y);
+		(*p).pos.y += 1;
+		check = block(map, (*p).pos.x, (*p).pos.y);
 		if (check == true)
-			p.pos.y -= 1;
+			(*p).pos.y -= 1;
 		break;
 
 	case LEFT:
-		p.pos.x -= 2;
-		check = block(map, p.pos.x, p.pos.y);
+		(*p).pos.x -= 2;
+		check = block(map, (*p).pos.x, (*p).pos.y);
 		if (check == true)
-			p.pos.x += 2;
+			(*p).pos.x += 2;
 		break;
 
 	case RIGHT:
-		p.pos.x += 2;
-		check = block(map, p.pos.x, p.pos.y);
+		(*p).pos.x += 2;
+		check = block(map, (*p).pos.x, (*p).pos.y);
 		if (check == true)
-			p.pos.x -= 2;
+			(*p).pos.x -= 2;
 		break;
 	}
 
-	gotoxy(p.pos.x, p.pos.y);
+	gotoxy((*p).pos.x, (*p).pos.y);
 	printf("●");
-	printxy(p.pos.x, p.pos.y);
+	printxy((*p).pos.x, (*p).pos.y);
 	pm_score = score(map, player, pm_score);
-
-	if (p.pos.x == 91 && p.pos.y == 19) {
-		endpacman();
-	}
 }
 
-void initenemy() {
+void initenemy() { //적 초기 위치 설정
 	e1.pos.x = 39;
 	e1.pos.y = 22;
 	e2.pos.x = 51;
@@ -216,22 +221,58 @@ void initenemy() {
 	drawenemy(e4);
 }
 
-void drawenemy(Enemy e) {
+void drawenemy(Enemy e) { //적 그리기
 	textcolor(12);
 	gotoxy(e.pos.x, e.pos.y);
 	printf("▲");
 }
 
-void moveenemy(Enemy *e, int(*map)[34]) {
+void moveenemy(Enemy *e, int(*map)[34]) { //적 이동 (랜덤 방향)
 	gotoxy((*e).pos.x, (*e).pos.y);
 
-	int n = *(*(map + (*e).pos.y) + (*e).pos.x);
 	int randnum = 0;
 	bool check = true;
 	bool isUpEmpty = false; //0
 	bool isDownEmpty = false; //1
 	bool isLeftEmpty = false; //2
 	bool isRightEmpty = false; //3
+
+	int y = (*e).pos.y - 9;
+	int x = ((*e).pos.x - 25) / 2;
+
+	int n = *(*(map + y) + x);
+
+	if (n == 0) {
+		textcolor(6);
+		printf("＊");
+	}
+	else if (n == 3) {
+		textcolor(9);
+		printf("P ");
+	}
+	else if (n == 4) {
+		textcolor(12);
+		printf("A ");
+	}
+	else if (n == 5) {
+		textcolor(2);
+		printf("C ");
+	}
+	else if (n == 6) {
+		textcolor(11);
+		printf("M ");
+	}
+	else if (n == 7) {
+		textcolor(10);
+		printf("A ");
+	}
+	else if (n == 8) {
+		textcolor(13);
+		printf("N ");
+	}
+	else {
+		printf("  ");
+	}
 
 	do {
 		randnum = rand() % 4;
@@ -268,44 +309,12 @@ void moveenemy(Enemy *e, int(*map)[34]) {
 	} while (isUpEmpty == false && isDownEmpty == false && isLeftEmpty == false && isRightEmpty == false);
 
 
-	if (n == 0) {
-		textcolor(6);
-		printf("＊");
-	}
-	else if (n == 3) {
-		textcolor(9);
-		printf("P ");
-	}
-	else if (n == 4) {
-		textcolor(12);
-		printf("A ");
-	}
-	else if (n == 5) {
-		textcolor(2);
-		printf("C ");
-	}
-	else if (n == 6) {
-		textcolor(11);
-		printf("M ");
-	}
-	else if (n == 7) {
-		textcolor(10);
-		printf("A ");
-	}
-	else if (n == 8) {
-		textcolor(13);
-		printf("N ");
-	}
-	else {
-		printf("  ");
-	}
-
 	gotoxy((*e).pos.x, (*e).pos.y);
 	textcolor(12);
 	printf("▲");
 }
 
-void update(int(*map)[34]) {
+void update(int(*map)[34]) { //적 위치 업데이트
 
 	Enemy* ptr1 = &e1;
 	Enemy* ptr2 = &e2;
@@ -316,14 +325,18 @@ void update(int(*map)[34]) {
 	if (ct - e1.oldtime > e1.movetime) {
 		e1.oldtime = ct;
 		moveenemy(ptr1, map);
+		Sleep(10);
 		moveenemy(ptr2, map);
+		Sleep(10);
 		moveenemy(ptr3, map);
+		Sleep(10);
 		moveenemy(ptr4, map);
+		Sleep(10);
 	}
 
 }
 
-bool block(int(*map)[34], int x, int y) {
+bool block(int(*map)[34], int x, int y) { //벽인지 확인
 
 	bool check = true;
 
@@ -340,7 +353,7 @@ bool block(int(*map)[34], int x, int y) {
 	return check;
 }
 
-int score(int(*map)[34], Player p, int pm_score) {
+int score(int(*map)[34], Player p, int pm_score) { //점수 계산
 
 	p.pos.y -= 9;
 	p.pos.x = (p.pos.x - 25) / 2;
@@ -394,14 +407,49 @@ int score(int(*map)[34], Player p, int pm_score) {
 	return pm_score;
 }
 
-void printxy(int x, int y) {
+void printxy(int x, int y) { //플레이어 현재 위치 출력
 	gotoxy(0, 0);
 	printf("X: %d", x);
 	printf(", Y: %d", y);
 }
 
-void endpacman() {
+void endpacman() { //팩맨 종료 화면
+
 	system("cls");
-	gotoxy(55, 19);
+
+	textcolor(12);
+
+	if (pm_score == 3400) {
+		gotoxy(56, 13);
+		printf("SUCCESS!!");
+	}
+	else {
+		gotoxy(51, 13);
+		printf("YOU CAN DO BETTER");
+	}
+
+	gotoxy(54, 15);
 	printf("SCORE : %d", pm_score);
+	gotoxy(52, 18);
+	printf("RETRY : press 'r'");
+	gotoxy(49, 19);
+	printf("GO TO MAIN : press 'm'");
+
+	int ch = getch();
+
+	if (ch == 'r') {
+		system("cls");
+		pacman();
+	}
+	else if (ch == 'm') {
+		system("cls");
+		selectGamesScreen();
+	}
+	else {
+		gotoxy(55, 22);
+		printf("WRONG PRESS");
+		Sleep(500);
+		endpacman();
+	}
+
 }

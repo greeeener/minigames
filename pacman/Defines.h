@@ -19,4 +19,7 @@ void init();
 void startMainScreen();
 void selectGamesScreen();
 
+void printTitle29(int map[][29], int h, int w, int x, int y);
+void printTitle34(int map[][34], int h, int w, int x, int y);
+
 #endif

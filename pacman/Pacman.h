@@ -24,7 +24,7 @@ void pacman();
 void startPacman();
 void drawmap(int(*map)[34]);
 void initplayer();
-void moveplayer(int(*map)[34], Player p, int xy);
+void moveplayer(int(*map)[34], Player *p, int xy);
 void initenemy();
 void drawenemy(Enemy e);
 void moveenemy(Enemy *e, int(*map)[34]);

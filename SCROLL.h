@@ -49,7 +49,7 @@ void run_s() {
 			if (ch == 'j') Jump();
 		}
 		if (t % 30 == 0) MapMove();
-		if (t % 50 == 0) Gravity();
+		if (t % 150 == 0) Gravity();
 		if (t % 500 == 0) Obstacle();
 		gotoxy(0, 0);
 		mapping();
@@ -118,7 +118,7 @@ int StartScreen()
 	}
 	return r;
 }
-//********************************************************************
+//맵베이스********************************************************************
 void mapbase()
 {
 	for (int i = 0; i < size_y; i++)
@@ -134,7 +134,7 @@ void mapbase()
 	person.x = 3;
 	person.y = size_y - 2;
 }
-//맵을 화면에 출력********************************************************************
+//맵출력********************************************************************
 void mapping()
 {
 	for (int i = 0; i < size_y; i++)
@@ -156,12 +156,12 @@ void Jump()
 {
 	int c;
 
-	if (map[person.y - 1][person.x] == BLK)
+	if (map[person.y - 2][person.x] == BLK)
 	{
 		c = map[person.y][person.x];
-		map[person.y][person.x] = map[person.y - 1][person.x];
-		map[person.y - 1][person.x] = c;
-		person.y--;
+		map[person.y][person.x] = map[person.y - 2][person.x];
+		map[person.y - 2][person.x] = c;
+		person.y-=2;
 	}
 }
 //중력********************************************************************************

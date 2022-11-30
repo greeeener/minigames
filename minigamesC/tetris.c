@@ -1,13 +1,13 @@
 #include "Defines.h"
 
-clock_t startTime, endTime, startGroundTime; // time.h¿¡ Á¤ÀÇµÈ ±¸Á¶Ã¼¸¦ »ç¿ëÇÏ¿© º¯¼ö ¼±¾ğ
-RECT blockSize; // windows.h¿¡ Á¤ÀÇµÈ ±¸Á¶Ã¼¸¦ »ç¿ëÇÏ¿© º¯¼ö ¼±¾ğ
+clock_t startTime, endTime, startGroundTime; // time.hì— ì •ì˜ëœ êµ¬ì¡°ì²´ë¥¼ ì‚¬ìš©í•˜ì—¬ ë³€ìˆ˜ ì„ ì–¸
+RECT blockSize; // windows.hì— ì •ì˜ëœ êµ¬ì¡°ì²´ë¥¼ ì‚¬ìš©í•˜ì—¬ ë³€ìˆ˜ ì„ ì–¸
 int x = 8, y = 0;
 int blockForm;
 int blockChange = 0;
 bool gameOver = false;
 
-// ¼¼·Î11 + 1Ä­ ¼ö, °¡·Î10 + 2Ä­ ¼ö
+// ì„¸ë¡œ11 + 1ì¹¸ ìˆ˜, ê°€ë¡œ10 + 2ì¹¸ ìˆ˜
 int space[11 + 1][10 + 2] =
 {
 	{1,0,0,0,0,0,0,0,0,0,0,1},
@@ -25,7 +25,7 @@ int space[11 + 1][10 + 2] =
 };
 
 int block[8][4][4][4] = {
-	{ // +ºí·° 
+	{ // +ë¸”ëŸ­ 
 		{
 			{0,0,0,0},
 			{0,1,0,0},
@@ -51,7 +51,7 @@ int block[8][4][4][4] = {
 			{0,1,0,0}
 		}
 	},
-	{   // ³×¸ğºí·° 
+	{   // ë„¤ëª¨ë¸”ëŸ­ 
 		{
 			{0,0,0,0},
 			{0,1,1,0},
@@ -77,7 +77,7 @@ int block[8][4][4][4] = {
 			{0,0,0,0}
 		}
 	},
-	{   // lÀÚ ºí·°
+	{   // lì ë¸”ëŸ­
 		{
 			{0,1,0,0},
 			{0,1,0,0},
@@ -103,7 +103,7 @@ int block[8][4][4][4] = {
 			{0,0,0,0}
 		}
 	},
-	{ // Tºí·°
+	{ // Të¸”ëŸ­
 		{
 			{0,0,0,0},
 			{0,1,0,0},
@@ -129,7 +129,7 @@ int block[8][4][4][4] = {
 			{0,1,0,0}
 		}
 	},
-	{    // ¹ø°³ ºí·°
+	{    // ë²ˆê°œ ë¸”ëŸ­
 		{
 			{0,0,0,0},
 			{0,1,1,0},
@@ -155,7 +155,7 @@ int block[8][4][4][4] = {
 			{0,1,0,0}
 		}
 	},
-	{   // ¹ø°³ ºí·° ¹İ´ë
+	{   // ë²ˆê°œ ë¸”ëŸ­ ë°˜ëŒ€
 		{
 			{0,0,0,0},
 			{1,1,0,0},
@@ -181,7 +181,7 @@ int block[8][4][4][4] = {
 			{1,0,0,0}
 		}
 	},
-	{   // Lºí·° 
+	{   // Lë¸”ëŸ­ 
 		{
 			{0,0,0,0},
 			{1,0,0,0},
@@ -207,7 +207,7 @@ int block[8][4][4][4] = {
 			{0,0,0,0}
 		}
 	},
-	{   // Lºí·° ¹İ´ë 
+	{   // Lë¸”ëŸ­ ë°˜ëŒ€ 
 		{
 			{0,0,0,0},
 			{0,0,1,0},
@@ -236,13 +236,13 @@ int block[8][4][4][4] = {
 
 };
 
-// Ãæµ¹ °¨Áö ÇÔ¼ö
+// ì¶©ëŒ ê°ì§€ í•¨ìˆ˜
 bool CheckCrash(int x, int y) {
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
 			if (block[blockForm][blockChange][i][j] == 1) {
 				int a = space[i + y][j + x / 2];
-				if (a == 1 || a == 2) { // º®ÀÏ ¶§, ºí·°ÀÏ ¶§
+				if (a == 1 || a == 2) { // ë²½ì¼ ë•Œ, ë¸”ëŸ­ì¼ ë•Œ
 					return true;
 				}
 			}
@@ -251,12 +251,12 @@ bool CheckCrash(int x, int y) {
 	return false;
 }
 
-// ºí·°ÇüÅÂ ·£´ı ÇÔ¼ö
+// ë¸”ëŸ­í˜•íƒœ ëœë¤ í•¨ìˆ˜
 void RandomBlock() {
 	blockForm = rand() % 8;
 }
 
-//ºí·°ÀÌ ³»·Á°¡´Â ½Ã°£ ÇÔ¼ö
+//ë¸”ëŸ­ì´ ë‚´ë ¤ê°€ëŠ” ì‹œê°„ í•¨ìˆ˜
 void DropBlockTime() {
 	endTime = clock();
 	if ((float)(endTime - startTime) >= 800)
@@ -269,7 +269,7 @@ void DropBlockTime() {
 		system("cls");
 	}
 }
-//ºí·°ÀÌ ¶¥¿¡ ´ê¾Æ¼­ ¶¥À¸·Î º¯ÇÏ´Â ÇÔ¼ö
+//ë¸”ëŸ­ì´ ë•…ì— ë‹¿ì•„ì„œ ë•…ìœ¼ë¡œ ë³€í•˜ëŠ” í•¨ìˆ˜
 void BlockMeetGround() {
 	if (CheckCrash(x, y + 1) == true) {
 		if ((float)(endTime - startGroundTime) > 1500)
@@ -287,22 +287,22 @@ void BlockMeetGround() {
 		}
 	}
 }
-// ºí·° Á¦°Å ÇÔ¼ö
+// ë¸”ëŸ­ ì œê±° í•¨ìˆ˜
 void RemoveBlock() {
-	for (int i = 11; i >= 0; i--) { // º®¶óÀÎ Á¦¿ÜÇÑ °ª
+	for (int i = 11; i >= 0; i--) { // ë²½ë¼ì¸ ì œì™¸í•œ ê°’
 		int cnt = 0;
 		for (int j = 1; j < 11; j++) { // 
 			if (space[i][j] == 2) {
 				cnt++;
 			}
 		}
-		if (cnt >= 10) { // º®µ¹ÀÌ ´Ù Âù °æ¿ì
+		if (cnt >= 10) { // ë²½ëŒì´ ë‹¤ ì°¬ ê²½ìš°
 			for (int j = 0; i - j >= 0; j++) {
 				for (int x = 1; x < 11; x++) {
 					if (i - j - 1 >= 0)
 						space[i - j][x] = space[i - j - 1][x];
 					else {
-						// ÃµÀåÀÏ °æ¿ì 0
+						// ì²œì¥ì¼ ê²½ìš° 0
 						space[i - j][x] = 0;
 
 					}
@@ -311,57 +311,57 @@ void RemoveBlock() {
 		}
 	}
 }
-// °ÔÀÓ È­¸é ºÎºĞ°ú ½×ÀÎ ºí·°À» ±×¸®´Â ÇÔ¼ö
+// ê²Œì„ í™”ë©´ ë¶€ë¶„ê³¼ ìŒ“ì¸ ë¸”ëŸ­ì„ ê·¸ë¦¬ëŠ” í•¨ìˆ˜
 void DrawMap() {
 	gotoxy(0, 0);
 	for (int i = 0; i < 12; i++) {
 		for (int j = 0; j < 12; j++) {
 			if (space[i][j] == 1) {
 				gotoxy(j * 2, i);
-				printf("¡à");
+				printf("â–¡");
 			}
 			else if (space[i][j] == 2) {
 				gotoxy(j * 2, i);
-				printf("¡á");
+				printf("â– ");
 			}
 		}
 	}
 }
-// ÇöÀç ºí·° ±×¸®´Â ÇÔ¼ö
+// í˜„ì¬ ë¸”ëŸ­ ê·¸ë¦¬ëŠ” í•¨ìˆ˜
 void DrawBlock() {
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
 			if (block[blockForm][blockChange][i][j] == 1) {
 				gotoxy(x + j * 2, y + i);
-				printf("¡á");
+				printf("â– ");
 			}
 		}
 	}
 }
-// Å°¸¦ ÀÌ¿ëÇØ °ÔÀÓÀ» ÁøÇàÇÏ´Â ÇÔ¼ö
+// í‚¤ë¥¼ ì´ìš©í•´ ê²Œì„ì„ ì§„í–‰í•˜ëŠ” í•¨ìˆ˜
 void Key() {
 	if (_kbhit() && CheckCrash(x, y + 1) == false) {
 		int key = _getch();
 		switch (key) {
-		case SPACEBAR: // ºí·°ÀÇ ¸ğ¾çÀ» º¯È­½ÃÅ´
+		case SPACEBAR: // ë¸”ëŸ­ì˜ ëª¨ì–‘ì„ ë³€í™”ì‹œí‚´
 			blockChange++;
 			if (blockChange >= 4)
 				blockChange = 0;
 			startGroundTime = clock();
 			break;
-		case LEFT: // ¿ŞÂÊÀ¸·Î ºí·°À» ¿òÁ÷ÀÓ
+		case LEFT: // ì™¼ìª½ìœ¼ë¡œ ë¸”ëŸ­ì„ ì›€ì§ì„
 			if (CheckCrash(x - 2, y) == false) {
 				x -= 2;
 				startGroundTime = clock();
 			}
 			break;
-		case RIGHT: // ¿À¸¥ÂÊÀ¸·Î ºí·°À» ¿òÁ÷ÀÓ
+		case RIGHT: // ì˜¤ë¥¸ìª½ìœ¼ë¡œ ë¸”ëŸ­ì„ ì›€ì§ì„
 			if (CheckCrash(x + 2, y) == false) {
 				x += 2;
 				startGroundTime = clock();
 			}
 			break;
-		case DOWN: // ¾Æ·¡·Î ºü¸£°Ô ºí·°À» ³»¸²
+		case DOWN: // ì•„ë˜ë¡œ ë¹ ë¥´ê²Œ ë¸”ëŸ­ì„ ë‚´ë¦¼
 			if (CheckCrash(x, y + 1) == false)
 				y++;
 			startGroundTime = clock();
@@ -422,6 +422,7 @@ void run_tetris() {
 		Key();
 		gameOver = checkover(space);
 	}
+	Sleep(800);
 	ShowGameOver();
 }
 

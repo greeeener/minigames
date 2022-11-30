@@ -1,0 +1,5 @@
+﻿  tetris.c
+C:\minigames\minigames-main\minigamesC\tetris.c(386,18): warning C4047: '함수': 'int (*)[12][12]'의 간접 참조 수준이 'int [12][12]'과(와) 다릅니다.
+C:\minigames\minigames-main\minigamesC\tetris.c(386,13): warning C4024: 'inittetris': 형식 및 실제 매개 변수 1의 형식이 서로 다릅니다.
+C:\minigames\minigames-main\minigamesC\tetris.c(403): warning C4717: 'ShowGameOver': 모든 제어 경로에서 재귀적입니다. 함수로 인해 런타임 스택 오버플로가 발생합니다.
+  minigamesC.vcxproj -> C:\minigames\minigames-main\Debug\minigamesC.exe
